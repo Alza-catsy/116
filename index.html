@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Финальная локация</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: #000;
+    /* Если захочешь фон-картинку, раскомментируй строку ниже и закинь f_bg.jpg в папку */
+    /* background: url('f_bg.jpg') center/cover no-repeat fixed; */
+    color: #fff;
+    font-family: 'Georgia', serif;
+    overflow: hidden;
+  }
+
+  /* Видео на весь экран */
+  #introVideo {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    object-fit: cover;
+    z-index: 10;
+    transition: opacity 1s ease-in-out;
+    cursor: pointer; 
+  }
+
+  /* Блок с подсказкой */
+  #hintContainer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    text-align: center;
+    padding: 20px;
+  }
+
+  #hintContainer.show {
+    opacity: 1;
+    z-index: 20; 
+  }
+
+  .hint-title {
+    font-size: 24px;
+    color: #ccc;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .hint-text {
+    font-size: 56px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(0, 255, 255, 0.5);
+    animation: pulse 2s infinite;
+    background: rgba(0,0,0,0.5);
+    padding: 20px 40px;
+    border-radius: 20px;
+    border: 2px dashed #fff;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  .skip-hint {
+    position: fixed;
+    bottom: 30px; right: 30px;
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    z-index: 15;
+    pointer-events: none;
+    transition: opacity 0.5s;
+  }
+
+  max-width: 600px {
+    .hint-title { font-size: 18px; }
+    .hint-text { font-size: 36px; padding: 15px 25px; }
+  }
+</style>
+</head>
+<body>
+
+  <video id="introVideo" src="f_video.mp4" autoplay playsinline></video>
+  
+  <div class="skip-hint" id="skipHint">Нажми на видео, чтобы пропустить</div>
+
+  <!-- Блок с финальной подсказкой -->
+  <div id="hintContainer">
+    <div class="hint-title">Ты на месте. Ищи здесь:</div>
+    <!-- ИСПРАВЛЕНО ТУТ -->
+    <div class="hint-text">Дом 116, подъезд 3</div>
+  </div>
+
+<script>
+  const video = document.getElementById('introVideo');
+  const hintContainer = document.getElementById('hintContainer');
+  const skipHint = document.getElementById('skipHint');
+
+  function showHint() {
+    video.style.opacity = '0';
+    skipHint.style.opacity = '0';
+    hintContainer.classList.add('show');
+    video.pause();
+  }
+
+  video.addEventListener('ended', showHint);
+  video.addEventListener('click', showHint);
+
+  setTimeout(() => {
+    if (video.paused && !hintContainer.classList.contains('show')) {
+      video.controls = true; 
+    }
+  }, 1000);
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
